@@ -1,0 +1,64 @@
+const text = ["Software Developer", "Python Programmer", "Web Developer"];
+
+let count = 0;
+let index = 0;
+let currentText = "";
+let letter = "";
+
+const typingElement = document.querySelector(".typing");
+const faders = document.querySelectorAll(".fade");
+const toggle = document.getElementById("modeToggle");
+
+function type() {
+if (count === text.length) {
+count = 0;
+}
+
+currentText = text[count];
+letter = currentText.slice(0, ++index);
+typingElement.textContent = letter;
+
+if (letter.length === currentText.length) {
+count++;
+index = 0;
+setTimeout(type, 1000);
+return;
+}
+
+setTimeout(type, 120);
+}
+
+function revealOnScroll() {
+faders.forEach((el) => {
+const rect = el.getBoundingClientRect();
+
+if (rect.top < window.innerHeight - 100) {
+el.classList.add("show");
+}
+});
+}
+
+toggle.onclick = () => {
+document.body.classList.toggle("light");
+toggle.textContent = document.body.classList.contains("light") ? "Sun" : "Moon";
+};
+
+window.addEventListener("scroll", revealOnScroll);
+
+window.addEventListener("load", () => {
+revealOnScroll();
+type();
+
+if (typeof particlesJS === "function") {
+particlesJS("particles-js", {
+particles: {
+number: { value: 80 },
+size: { value: 3 },
+move: { speed: 1 },
+line_linked: {
+enable: true
+}
+}
+});
+}
+});
